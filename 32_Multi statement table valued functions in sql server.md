@@ -54,8 +54,8 @@ Select * from fn_MSTVF_GetEmployee();
 
 - multi-statement table not possiable coz @Table it is Temporary it may change column **list and signature**   
 
-
-
+```SQL
     Update fn_ILTVF_GetEmployee() 
     set Name = 'Sam'
     where Id = 1
+```
