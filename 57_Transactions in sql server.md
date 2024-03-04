@@ -31,7 +31,7 @@ QtyAvailable = 300;
 ```sql
     Begin Transaction
             update tblProduct set QtyAvailable = 200 where ProductId = 1;
-   -- End Transaction
+
 ```
 - when we exe upper query 
 - withnin same session window => querry 
@@ -78,6 +78,7 @@ QtyAvailable = 300;
 
 
 ---
+<img src="./img/C_46.png" />
 
 ### Update City  SP
 
@@ -86,10 +87,41 @@ QtyAvailable = 300;
     as
     Begin
         Begin Try
-            Begin Trans
+            Begin Transaction
+                update tblMailingAddress set City = 'LONDON' where AddressId = 1 and EmployeeNumber = 101
+
+                Update tblPhysicalAddress set City = 'LONDON' where AddressId = 1 and EmployeeNumber = 101
+            Commit Transaction
         End Try
         Begin Catch
-
-        End C
+            Rollback Transaction
+        End Catch
     End
 ```
+
+- The upper querry is commited cussfully coz it has no error 
+
+### Now intentionally create error 
+
+- be coz of collumn length 15 less from insert city length Gretter 20 character 
+
+
+```sql
+    Create Procdure spUpdateAddress
+    as
+    Begin
+        Begin Try
+            Begin Transaction
+                update tblMailingAddress set City = 'LONDON' where AddressId = 1 and EmployeeNumber = 101
+
+                Update tblPhysicalAddress set City = 'LONDON London' where AddressId = 1 and EmployeeNumber = 101
+            Commit Transaction
+        End Try
+        Begin Catch
+            Rollback Transaction
+        End Catch
+    End
+```
+
+- This querry rollback 
+- both of the serise of update querry successed or Non-Of them
