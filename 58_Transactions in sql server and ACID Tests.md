@@ -50,3 +50,51 @@
 - the data is restored to its orginal state 
 - once the system begins running again
 
+<img src="./img/C_49.png" />
+
+- we want to retrive product which is not sell at least one using subquerry?
+
+```sql
+    Select * from tblProducts;
+    Select * from tblProductSales;
+
+    -- Not sell at lest one
+
+    Select Id, Name, [Description]
+    from tblProducts 
+    where Id Not In (Select distinct ProductId from tblProductSales)
+
+
+```
+- write querry using join to get same output 
+
+```sql
+     Select tblProducts.Id, Name, [Description]
+    from tblProducts 
+    left join tblProductSales
+    on  tblProducts.Id = tblProductSales.ProductId
+    where tblProductSales.ProductsId is null;
+
+    -- left join gives matching and non matching rows
+    -- we need only the left which are non-matching 
+```
+
+- we want to know which products we need to sell how much write a subquerry
+
+```sql
+    Select Name, 
+    (Select Sum(QuantitySold) from tblProductSales where ProductId = 2tblProducts.Id) as QtySold
+    from tblProducts
+    order by Name;
+```
+
+- Same using Join 
+
+```sql
+    Select Name, Sum(QuantitySold) as QtySold
+    from tblProducts
+    left join tblProductSales
+    on tblProducts.Id = tblProductSales.ProductId
+    Group by Name;
+```
+
